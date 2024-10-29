@@ -1,0 +1,1052 @@
+[
+    {
+        "id": "9b846f0294e09a5c",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Start",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 1380,
+        "wires": [
+            [
+                "0358a2c4bc694d51"
+            ]
+        ]
+    },
+    {
+        "id": "f431c78cad71bf76",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.data",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "8cf4ab1eb00da3cb",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send GET Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "bf2f433f96e1a68f",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 790,
+        "y": 900,
+        "wires": [
+            [
+                "f431c78cad71bf76"
+            ]
+        ]
+    },
+    {
+        "id": "d1a1d60a5a7ff71f",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Get Station List",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 630,
+        "y": 1120,
+        "wires": [
+            [
+                "3b83bb4d24ef5e1d"
+            ]
+        ]
+    },
+    {
+        "id": "3b83bb4d24ef5e1d",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "getStationList",
+        "func": "msg.headers = {\n    'roaRand': flow.get('authData').roaRand,\n    'Cookie': 'locale=de-de;bspsession=' + flow.get('authData').accessToken + ';dp-session=' + flow.get('authData').accessToken + '; Secure; HttpOnly',\n    \"Content-Type\": \"application/json\"\n};\n\nmsg.payload = {\n    \"locale\": \"de_DE\",\n    \"sortId\": \"createTime\",\n    \"timeZone\": \"2.00\",\n    \"pageSize\": \"11\",\n    \"supportMDevice\": \"1\",\n    \"sortDir\": \"DESC\",\n    \"curPage\": 1\n};\n\n// HTTPS options (ignore SSL certificate issues)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + ':32800/rest/pvms/web/station/v1/station/station-list';\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 1120,
+        "wires": [
+            [
+                "9e1c3c0a5e8bdb49"
+            ]
+        ]
+    },
+    {
+        "id": "9e1c3c0a5e8bdb49",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send GET Request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "5b9f23de0f085ec1",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1070,
+        "y": 1120,
+        "wires": [
+            [
+                "f1e9b6d2edb50e57",
+                "c68dfe69fc99a83e"
+            ]
+        ]
+    },
+    {
+        "id": "f1e9b6d2edb50e57",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Station List Response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.data.list[0]",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "c4776df86df4b8bb",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "getServerInfo",
+        "func": "// Set request headers\nmsg.headers = {\n    'roaRand': flow.get('authData').roaRand,\n    'Cookie': 'locale=de-de;bspsession=' + flow.get('authData').accessToken + ';dp-session=' + flow.get('authData').accessToken + '; Secure; HttpOnly'\n};\n\n// HTTPS options (ignore SSL certificate issues)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + ':32800/rest/neteco/phoneapp/v2/fusionsolarbusiness/company/getorganizationcompanybyuser';\n\n// Return to the next node\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 900,
+        "wires": [
+            [
+                "8cf4ab1eb00da3cb"
+            ]
+        ]
+    },
+    {
+        "id": "f491650bfb0c6b86",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 330,
+        "y": 900,
+        "wires": [
+            [
+                "c4776df86df4b8bb"
+            ]
+        ]
+    },
+    {
+        "id": "cebccd7667900c14",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "WalboxSettings",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.data",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "fd2010a5790888ed",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "ChargeStatus",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "b14751db80ca84dd",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send POST Request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "89160be680327862",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1080,
+        "y": 1340,
+        "wires": [
+            [
+                "fd2010a5790888ed",
+                "67e501e1b80c466d"
+            ]
+        ]
+    },
+    {
+        "id": "066aad042018e60a",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send GET Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "89160be680327862",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1070,
+        "y": 1440,
+        "wires": [
+            [
+                "cebccd7667900c14",
+                "8a5b3e7fc68659f1"
+            ]
+        ]
+    },
+    {
+        "id": "461850fa71d5f186",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "getWallboxSettings",
+        "func": "// Retrieve authentication data and parentDn from flow context\nconst roaRand = flow.get(\"authData\").roaRand;\nconst accessToken = flow.get(\"authData\").accessToken;\nconst parentDn = flow.get(\"wallboxInfo\").dn;\n\n// Set headers\nmsg.headers = {\n    'roaRand': roaRand,\n    'Cookie': `locale=de-de;bspsession=${accessToken};dp-session=${accessToken}; Secure; HttpOnly`\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + `:32800/rest/neteco/web/config/device/v1/children-list?conditionParams.curPage=0&conditionParams.mocTypes=60081&conditionParams.parentDn=${encodeURIComponent(parentDn)}&conditionParams.recordperpage=1`;\n\n// HTTPS options (ignore SSL verification if necessary)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1440,
+        "wires": [
+            [
+                "066aad042018e60a"
+            ]
+        ]
+    },
+    {
+        "id": "81760f59f38ef503",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Prepare Request",
+        "func": "// Retrieve `dnId` and authentication data from flow context\nconst dnId = flow.get(\"wallboxInfo\").dnId;\nconst roaRand = flow.get(\"authData\").roaRand;\nconst accessToken = flow.get(\"authData\").accessToken;\n\n// Construct request payload\nmsg.payload = {\n    gunNumber: 1,\n    needRealTimeStatus: false,\n    dnId: dnId\n};\n\n// Set headers\nmsg.headers = {\n    'roaRand': roaRand,\n    'Cookie': `locale=de-de;bspsession=${accessToken};dp-session=${accessToken}; Secure; HttpOnly`,\n    'Content-Type': 'application/json',\n    'x-timezone-offset': '120',\n    'client-info': '_manufacturer=iPhone;_model=iPhone;_os_ver=18.0.1;_os=iOS;_app_ver=24.6.102006;_package_name=com.huawei.smartpvms;appClientId=86366133-B8B5-41FA-8EB9-E5A64229E3D5',\n    'x-requested-with': 'XMLHttpRequest',\n    'User-Agent': 'iCleanPower/24.6.102006 (iPhone; iOS 18.0.1; Scale/3.00)',\n    'Accept-Language': 'de-DE;q=1, en-DE;q=0.9, zh-Hans-DE;q=0.8',\n    'Accept': '*/*'\n};\n\n// HTTPS options (ignore SSL verification if necessary)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + ':32800/rest/neteco/web/homemgr/v1/charger/status/charge-status';\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1340,
+        "wires": [
+            [
+                "b14751db80ca84dd"
+            ]
+        ]
+    },
+    {
+        "id": "16a83cca49330b3c",
+        "type": "switch",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Check msg.topic",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "createInfo",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "createAuth",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "useVariable",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 570,
+        "y": 1380,
+        "wires": [
+            [
+                "check_variable_function"
+            ],
+            [],
+            [
+                "461850fa71d5f186",
+                "81760f59f38ef503"
+            ]
+        ]
+    },
+    {
+        "id": "0358a2c4bc694d51",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Check wallboxInfo",
+        "func": "let wallboxInfo = flow.get('wallboxInfo');\nlet authData = flow.get('authData');\n\nif (wallboxInfo === undefined) {\n    msg.topic = \"createInfo\";\n    node.status({ fill: \"red\", shape: \"dot\", text: \"Info missing\" });\n} else if (authData === undefined){\n    msg.topic = \"createAuth\";\n    node.status({ fill: \"red\", shape: \"dot\", text: \"Auth missing\" });\n} else {\n    msg.topic = \"useVariable\";\n    node.status({ fill: \"green\", shape: \"dot\", text: \"Variables exists\" });\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 1380,
+        "wires": [
+            [
+                "16a83cca49330b3c"
+            ]
+        ]
+    },
+    {
+        "id": "inject_node",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Start",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 1180,
+        "wires": [
+            [
+                "check_variable_function"
+            ]
+        ]
+    },
+    {
+        "id": "check_variable_function",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Check stationList",
+        "func": "let myVariable = flow.get('stationList');\n\nif (myVariable === undefined) {\n    msg.topic = \"createVariable\";\n    node.status({ fill: \"red\", shape: \"dot\", text: \"Variable missing\" });\n} else {\n    msg.topic = \"useVariable\";\n    node.status({ fill: \"green\", shape: \"dot\", text: \"Variable exists\" });\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 1180,
+        "wires": [
+            [
+                "switch_node"
+            ]
+        ]
+    },
+    {
+        "id": "switch_node",
+        "type": "switch",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Check msg.topic",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "createVariable",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "useVariable",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 580,
+        "y": 1180,
+        "wires": [
+            [
+                "3b83bb4d24ef5e1d"
+            ],
+            [
+                "621cb76bae77073e"
+            ]
+        ]
+    },
+    {
+        "id": "621cb76bae77073e",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "getWallboxInfo",
+        "func": "const parentDn = flow.get(\"stationList\").dn;\nconst roaRand = flow.get(\"authData\").roaRand;\nconst accessToken = flow.get(\"authData\").accessToken;\n\nmsg.payload = `conditionParams.curPage=0&conditionParams.mocTypes=60080&conditionParams.parentDn=${parentDn}&conditionParams.recordperpage=500`;\n\nmsg.headers = {\n    'roaRand': roaRand,\n    'Cookie': `locale=de-de;bspsession=${accessToken};dp-session=${accessToken}; Secure; HttpOnly`,\n    'Content-Type': 'application/x-www-form-urlencoded'\n};\n\n// HTTPS options (ignore SSL certificate issues)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + ':32800/rest/neteco/web/config/device/v1/device-list';\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 1240,
+        "wires": [
+            [
+                "c996113ed6110f8a"
+            ]
+        ]
+    },
+    {
+        "id": "c996113ed6110f8a",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send POST Request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "89160be680327862",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1080,
+        "y": 1240,
+        "wires": [
+            [
+                "6ebfe87301c0e1ef",
+                "a1f4c4aa3d1aca9c"
+            ]
+        ]
+    },
+    {
+        "id": "6ebfe87301c0e1ef",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "WallboxInfo",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.data",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1310,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "a1f4c4aa3d1aca9c",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "function 17",
+        "func": "let response = msg.payload;  // Assuming msg.payload contains the JSON response\n\nconst basePath = `evcc.WallboxInfo`;\n\n// Beschreibbare IDs (manuell festgelegt)\nconst WRITABLE_IDS = [\n    20001, 20002, 20004, 20005, 20006, 20010, 20011, 20013, 20015, 20016, 20017, 538976529, 538976290, 538976533, 538976534, 538976570, 538976800\n];\n\n\n// Store these in flow context for future use\nflow.set(\"wallboxInfo\", response.data[0]);\n\n// Get the wallboxInfo from the flow context\nvar wallboxInfo = flow.get('wallboxInfo');\n\n// Loop over all keys in wallboxInfo\nfor (var key in wallboxInfo) {\n    if (key === 'paramValues') {\n        // Special handling for paramValues\n        var paramValues = wallboxInfo.paramValues;\n        for (var paramKey in paramValues) {\n            var paramValue = paramValues[paramKey];\n            // Create a new message for each paramValue\n            var msg = { payload: paramValue, topic: \"wallboxInfo/paramValues/\" + paramKey };\n            // Send the message to the next node (e.g., an MQTT out node)\n            node.send(msg);\n        }\n    } else {\n        // Handle all other data\n        var value = wallboxInfo[key];\n        // Create a new message for each value\n        var msg = { payload: value, topic: \"wallboxInfo/\" + key };\n        // Send the message to the next node (e.g., an MQTT out node)\n        node.send(msg);\n    }\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 1260,
+        "wires": [
+            [
+                "fceade3f090199ef",
+                "3b5d06159ed33151"
+            ]
+        ]
+    },
+    {
+        "id": "c68dfe69fc99a83e",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "function 16",
+        "func": "let response = msg.payload;  // Assuming msg.payload contains the JSON response\n\n// Store these in flow context for future use\nflow.set(\"stationList\", response.data.list[0]);\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 1140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e9b72d193dbb7765",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 330,
+        "y": 820,
+        "wires": [
+            [
+                "24e254717cd39cfb"
+            ]
+        ]
+    },
+    {
+        "id": "24e254717cd39cfb",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "getUserDetailInfo",
+        "func": "//msg.payload = flow.get('accessToken')\n\n// Set request headers\nmsg.headers = {\n    'roaRand': flow.get('authData').roaRand,\n    'Cookie': 'locale=de-de;bspsession=' + flow.get('authData').accessToken + ';dp-session=' + flow.get('authData').accessToken + '; Secure; HttpOnly'\n};\n\n// HTTPS options (ignore SSL certificate issues)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Set the full URL with query parameters\nmsg.url = flow.get('authData').regionFloatIp + ':32800/rest/neteco/phoneapp/v1/datacenter/getuserdetailinfo';\n\n// Return to the next node\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 820,
+        "wires": [
+            [
+                "ec316f6fc9db565f"
+            ]
+        ]
+    },
+    {
+        "id": "ec316f6fc9db565f",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Send GET Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "bf2f433f96e1a68f",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 770,
+        "y": 820,
+        "wires": [
+            [
+                "3cf9431ad95128c3"
+            ]
+        ]
+    },
+    {
+        "id": "3cf9431ad95128c3",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "52f1e5f94ef11e1a",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "CONFIG",
+        "payload": "{\"userName\":\"user\",\"password\":\"password\",\"grantType\":\"password\",\"appClientId\":\"86366133-B8B5-41FA-8EB9-E5A64229E3E1\",\"interval\":300000}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 660,
+        "wires": [
+            [
+                "20eb5abff38db1fd"
+            ]
+        ]
+    },
+    {
+        "id": "e820177246a2d764",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "authenticate",
+        "func": "const CONFIG = msg.payload\n\n// Build the request body\nmsg.payload = {\n    userName: CONFIG.userName,\n    value: CONFIG.password,\n    grantType: CONFIG.grantType,\n    verifyCode: \"\",\n    appClientId: CONFIG.appClientId\n};\n\n// Set request headers\nmsg.headers = {\n    'Content-Type': 'application/json'\n};\n\n// HTTPS options (ignore SSL certificate issues)\nmsg.httpsAgentOptions = {\n    rejectUnauthorized: false\n};\n\n// Return to the next node\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 660,
+        "wires": [
+            [
+                "2eb5bb66a61cbda6"
+            ]
+        ]
+    },
+    {
+        "id": "2eb5bb66a61cbda6",
+        "type": "http request",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://intl.fusionsolar.huawei.com:32800/rest/neteco/appauthen/v1/smapp/app/token",
+        "tls": "e882110ef88cadef",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 870,
+        "y": 660,
+        "wires": [
+            [
+                "ad92e6ee59d7c553",
+                "2ffe9595ba40534c"
+            ]
+        ]
+    },
+    {
+        "id": "2ffe9595ba40534c",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.data",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "ad92e6ee59d7c553",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "Store credentials in flow",
+        "func": "let response = msg.payload;  // Assuming msg.payload contains the JSON response\n\n// Store these in flow context for future use\n//flow.set(\"accessToken\", response.data.accessToken);\n//flow.set(\"regionFloatIp\", response.data.regionFloatIp);\n//flow.set(\"roaRand\", response.data.roaRand);\n//flow.set(\"refreshToken\", response.data.refreshToken);\nflow.set(\"authData\", response.data);\n\n// Set the flag variable to 1000\n//var flag = 1000;\nconst refreshTime = (flow.get('authData').expires - 300) * 1000; // Erneuerung 5 Minuten vor Ablauf\n\n// Store the flag variable in the flow context\nflow.set('countDown', refreshTime);\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fceade3f090199ef",
+        "type": "mqtt out",
+        "z": "7ae839bd9cdd5b09",
+        "name": "wallboxInfo",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b40c03fb2c8da610",
+        "x": 1530,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "3b5d06159ed33151",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 16",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "20eb5abff38db1fd",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "function 19",
+        "func": "let myVariable = flow.get('countDown');\n\nif (myVariable === undefined || myVariable <= 0 ) {\n    msg.topic = \"createVariable\";\n    node.status({ fill: \"red\", shape: \"dot\", text: \"Variable missing\" });\n} else {\n    msg.topic = \"useVariable\";\n    //const refreshTime = (flow.get('authData').expires - 300) * 1000; // Erneuerung 5 Minuten vor Ablauf\n    var oldValue = flow.get(\"countDown\");\n\n    const newValue = oldValue - 1000;\n\n    flow.set(\"countDown\", newValue);\n\n    //msg.payload = newValue;\n\n    //return msg;\n    node.status({   fill: \"green\", shape: \"dot\", \n                    //text: \"Variable exists\",\n                    text: `Nächste Token-Erneuerung in ${(newValue / 1000 / 60 ).toFixed(2)} Minuten`});\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 660,
+        "wires": [
+            [
+                "8a7129c85b53aeaf"
+            ]
+        ]
+    },
+    {
+        "id": "8a7129c85b53aeaf",
+        "type": "switch",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "createVariable",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 510,
+        "y": 660,
+        "wires": [
+            [
+                "e820177246a2d764"
+            ]
+        ]
+    },
+    {
+        "id": "8a5b3e7fc68659f1",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "function 22",
+        "func": "let response = msg.payload;  // Assuming msg.payload contains the JSON response\n\n//const basePath = `evcc/wallboxSettings`;\n\n// Beschreibbare IDs (manuell festgelegt)\nconst WRITABLE_IDS = [\n    20001, 20002, 20004, 20005, 20006, 20010, 20011, 20013, 20015, 20016, 20017, 538976529, 538976290, 538976533, 538976534, 538976570, 538976800\n];\n\n\n// Store these in flow context for future use\nflow.set(\"wallboxSettings\", response.data[0]);\n\n// Get the wallboxInfo from the flow context\nvar wallboxSettings = flow.get('wallboxSettings');\n\n// const dnId = wallboxSettings.dnId;\n\n// Loop over all keys in wallboxSettings\nfor (var key in wallboxSettings) {\n    if (key === 'paramValues') {\n        // Special handling for paramValues\n        var paramValues = wallboxSettings.paramValues;\n        for (var paramKey in paramValues) {\n            var paramValue = paramValues[paramKey];\n            // Create a new message for each paramValue\n            var msg = { payload: paramValue, topic: \"wallboxSettings/paramValues/\" + paramKey };\n            // Send the message to the next node (e.g., an MQTT out node)\n            node.send(msg);\n        }\n    } else {\n        // Handle all other data\n        var value = wallboxSettings[key];\n        // Create a new message for each value\n        var msg = { payload: value, topic: \"wallboxSettings/\" + key };\n        // Send the message to the next node (e.g., an MQTT out node)\n        node.send(msg);\n    }\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 1460,
+        "wires": [
+            [
+                "17a4ee334f980c27",
+                "1b6f747116ab80ac"
+            ]
+        ]
+    },
+    {
+        "id": "17a4ee334f980c27",
+        "type": "mqtt out",
+        "z": "7ae839bd9cdd5b09",
+        "name": "wallboxSettings",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b40c03fb2c8da610",
+        "x": 1540,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "1b6f747116ab80ac",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 19",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "4de6173adadc2159",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "scheduleIntervals",
+        "func": "let timer = flow.get('timer');\nlet chargeStatus = flow.get('chargeStatus').chargeStatus;\n//let intervalTime = 60000; // Default interval: 10 seconds\nlet intervalTime = 300000; // Default interval: 5 minutes\n// Define specific interval times based on the charge status\nif ([3, 4, 7, 8].includes(chargeStatus)) {\n    //intervalTime = 10000; // 10 seconds for these statuses\n    intervalTime = 30000; // 30 seconds for these statuses\n    //needRealTimeStatus = true; // Enable real-time status when charging or in related states\n} else if ([1, 2, 6, 10, 11].includes(chargeStatus)) {\n    //intervalTime = 30000; // 30 seconds for these statuses\n    intervalTime = 180000; // 3 minutes for these statuses\n}\n\n\nif (timer === undefined || chargeStatus === undefined || timer >= intervalTime){\n    flow.set('timer', 0);\n    msg.topic = 'alarm';\n}else{\n    flow.set('timer', timer + 1000);\n    msg.topic = 'cool';\n}\n\nmsg.payload = {\n    timer: flow.get('timer'),\n    status: chargeStatus,\n    interval: intervalTime\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1520,
+        "wires": [
+            [
+                "c759e69f1e46d4d8",
+                "bbc2d1c747344bbc"
+            ]
+        ]
+    },
+    {
+        "id": "893a87b5a93a9cae",
+        "type": "inject",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "props": [],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 1520,
+        "wires": [
+            [
+                "4de6173adadc2159"
+            ]
+        ]
+    },
+    {
+        "id": "c759e69f1e46d4d8",
+        "type": "debug",
+        "z": "7ae839bd9cdd5b09",
+        "name": "debug 22",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 1560,
+        "wires": []
+    },
+    {
+        "id": "bbc2d1c747344bbc",
+        "type": "switch",
+        "z": "7ae839bd9cdd5b09",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "alarm",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cool",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 1500,
+        "wires": [
+            [
+                "0358a2c4bc694d51"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "67e501e1b80c466d",
+        "type": "function",
+        "z": "7ae839bd9cdd5b09",
+        "name": "function 25",
+        "func": "let response = msg.payload;  // Assuming msg.payload contains the JSON response\n\nflow.set('chargeStatus', response);\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 1360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bf2f433f96e1a68f",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "5b9f23de0f085ec1",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "89160be680327862",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "e882110ef88cadef",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "b40c03fb2c8da610",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "192.168.178.40",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
