@@ -1,0 +1,1011 @@
+[
+    {
+        "id": "6cd485d1285d546b",
+        "type": "tab",
+        "label": "garage1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "aac3d0caf2838c4f",
+        "type": "CS server",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "port": "8181",
+        "enabled15": false,
+        "path15": "",
+        "enabled16": false,
+        "path16": "",
+        "enabled16j": true,
+        "path16j": "",
+        "log": false,
+        "pathlog": "",
+        "x": 360,
+        "y": 140,
+        "wires": [
+            [
+                "f80a91f566e7d32f",
+                "39adac989321bfbd"
+            ]
+        ]
+    },
+    {
+        "id": "f80a91f566e7d32f",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 60",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 600,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "8497ee458036bed6",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "MeterValues",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"msgType\":2,\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"MeterValues\",\"connectorId\":1}}",
+        "payloadType": "json",
+        "x": 500,
+        "y": 1040,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5e6fde5b1f759c9a",
+        "type": "CS request JSON",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "remotecb": "d5c732aab50fec48",
+        "command": "",
+        "cmddata": "",
+        "log": true,
+        "pathlog": "",
+        "x": 200,
+        "y": 640,
+        "wires": [
+            [
+                "d9663a75bb0f497f",
+                "81093fa70e56c99d"
+            ]
+        ]
+    },
+    {
+        "id": "d9663a75bb0f497f",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 61",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 380,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "787b1be322db2647",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "GetConfiguration",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"GetConfiguration\",\"data\":{}}",
+        "payloadType": "json",
+        "x": 490,
+        "y": 1080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cfa1401bf81c4800",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "compositeSchedule",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"GetCompositeSchedule\",\"data\":{\"connectorId\":1,\"duration\":60}}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 1200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98f181b0e565dc3d",
+        "type": "comment",
+        "z": "6cd485d1285d546b",
+        "name": "garage1 (SmartCharger) connected to node-red csms",
+        "info": "",
+        "x": 520,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a5c4c4d3d28cc69a",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "BootNotification",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"BootNotification\",\"connectorId\":0}}",
+        "payloadType": "json",
+        "x": 490,
+        "y": 1160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "37783fb2a3b2bd60",
+        "type": "server response",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "x": 1180,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3b2755994b2c17b0",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 32",
+        "func": "\nmsg.payload = {\n    status: \"Accepted\", // or \"Pending\", \"Rejected\" based on your logic\n    currentTime: new Date().toISOString(),\n    interval: 30 // Recommended heartbeat interval\n};\n\nreturn msg; // Send the response back to the Charge Point\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 80,
+        "wires": [
+            [
+                "37783fb2a3b2bd60",
+                "7b6b5c45a80a252f"
+            ]
+        ]
+    },
+    {
+        "id": "2f9160943edc389c",
+        "type": "switch",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "property": "payload.command",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "BootNotification",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StartTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "MeterValues",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Heartbeat",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StopTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 6,
+        "x": 710,
+        "y": 160,
+        "wires": [
+            [
+                "3b2755994b2c17b0"
+            ],
+            [
+                "77551567ae230eba"
+            ],
+            [
+                "1b6e99afe777d96c"
+            ],
+            [
+                "0da4c54a429eb843"
+            ],
+            [
+                "17ed30fe0b963348"
+            ],
+            [
+                "58fa56736ebf44d5"
+            ]
+        ]
+    },
+    {
+        "id": "77551567ae230eba",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 34",
+        "func": "\nmsg.payload = {  \n    idTagInfo: { status: \"Accepted\" }, \n    transactionId: 1731077294 \n    } \n\nreturn msg; // Send the response back to the Charge Point\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "37783fb2a3b2bd60"
+            ]
+        ]
+    },
+    {
+        "id": "changeAvailabilityTrigger",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "ChangeAvailability",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"command\":\"ChangeAvailability\",\"data\":{\"connectorId\":0,\"type\":\"Operative\"}}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 1120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1b6e99afe777d96c",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 35",
+        "func": "msg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 160,
+        "wires": [
+            [
+                "37783fb2a3b2bd60"
+            ]
+        ]
+    },
+    {
+        "id": "0da4c54a429eb843",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 36",
+        "func": "msg.payload = {}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 200,
+        "wires": [
+            [
+                "37783fb2a3b2bd60"
+            ]
+        ]
+    },
+    {
+        "id": "17ed30fe0b963348",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 37",
+        "func": "\nmsg.payload = {\n    idTagInfo: { status: \"Accepted\" },\n    transactionId: 1731077294\n} \n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 240,
+        "wires": [
+            [
+                "37783fb2a3b2bd60"
+            ]
+        ]
+    },
+    {
+        "id": "f41339f614ac8cae",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "ChangeConfiguration",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"MeterValueSampleInterval\",\"value\":\"10\"}}",
+        "payloadType": "json",
+        "x": 470,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e0edd576e2a3a328",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "SetChargingProfile",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":15,\"stackLevel\":15,\"chargingProfilePurpose\":\"TxDefaultProfile\",\"chargingProfileKind\":\"Relative\",\"chargingSchedule\":{\"chargingRateUnit\":\"W\",\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":0},{\"startPeriod\":30,\"limit\":8000},{\"startPeriod\":60,\"limit\":10000}]}}}}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "002214a63a8c3654",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "SetChargingProfile",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":11,\"stackLevel\":11,\"chargingProfilePurpose\":\"ChargingStationMaxProfile\",\"chargingProfileKind\":\"Absolute\",\"chargingSchedule\":{\"startSchedule\":\"2024-12-01T10:39:49Z\",\"duration\":3600,\"chargingRateUnit\":\"A\",\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":6}]}}}}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "58fa56736ebf44d5",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 67",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a857868333d61509",
+        "type": "CP client JSON",
+        "z": "6cd485d1285d546b",
+        "name": "proxy",
+        "cbId": "garage0",
+        "remotecs": "a920bc54828cdce0",
+        "ocppver": "1.6j",
+        "command": "",
+        "cmddata": "",
+        "log": false,
+        "pathlog": "",
+        "wsdelayconnect": true,
+        "wstomin": 5,
+        "wstomax": 360,
+        "wstoinc": 5,
+        "x": 650,
+        "y": 640,
+        "wires": [
+            [
+                "ac31ca8ea48f9a76"
+            ]
+        ]
+    },
+    {
+        "id": "c122e884928436f0",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 72",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 1240,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "aed7ac7b67e475e7",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 73",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 1140,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "568e428d1dbb24c9",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 40",
+        "func": "\nfunction reorderObject(obj) {\n    // Check if \"status\" exists in the object, if so place it first\n    let reorderedObj = {};\n\n    if (obj.hasOwnProperty(\"status\")) {\n        reorderedObj[\"status\"] = obj[\"status\"];\n    }\n\n    // Add all other properties in their original order, except \"status\"\n    for (let key in obj) {\n        if (key !== \"status\") {\n            reorderedObj[key] = obj[key];\n        }\n    }\n\n    return reorderedObj;\n}\n\nfunction reorderResponse(obj) {\n    // Reorder the properties in the specified order\n    return {\n        ocpp: obj.ocpp,\n        _msgid: obj._msgid,\n        payload: obj.payload,\n        msgId: obj.msgId\n    };\n}\n\n////\n\nlet command = msg.ocpp.command; // Get command from response\n    \n// Retrieve the original MessageId for this command\nlet messageMap = flow.get('messageMap') || {};\nlet originalMessageId = messageMap[command];\n    \n\nmsg.ocpp = originalMessageId.ocpp; // Set original MessageId\n//msg.payload.command = command;\n//msg.payload.msgType = msg.ocpp.msgType;\nmsg.msgId = originalMessageId.msgId; // Set original MessageId\nmsg._msgid = originalMessageId._msgid; // Set original MessageId\n\ndelete messageMap[command]; // Optionally remove it after use\nflow.set('messageMap', messageMap); // Update map in flow context\n\n// Set chargeBoxIdentity (optional)\nmsg.ocpp.chargeBoxIdentity = \"garage1\";\nmsg.payload.data = reorderObject(msg.payload.data);\n\nmsg = reorderResponse(msg);\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 420,
+        "wires": [
+            [
+                "37783fb2a3b2bd60",
+                "7ef443927d772554"
+            ]
+        ]
+    },
+    {
+        "id": "7ef443927d772554",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 75",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 1260,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "b185c78168d96289",
+        "type": "switch",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "property": "ocpp.websocket",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ONLINE",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "OFFLINE",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 450,
+        "y": 300,
+        "wires": [
+            [
+                "19edd7a9d3cd4e71"
+            ],
+            [
+                "19edd7a9d3cd4e71"
+            ],
+            [
+                "1e08fb8855e6c6ed"
+            ]
+        ]
+    },
+    {
+        "id": "39adac989321bfbd",
+        "type": "switch",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "property": "ocpp.chargeBoxIdentity",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "garage0",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "garage3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [],
+            [
+                "b185c78168d96289"
+            ],
+            [
+                "2f9160943edc389c"
+            ],
+            [
+                "2f9160943edc389c"
+            ]
+        ]
+    },
+    {
+        "id": "7b6b5c45a80a252f",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 77",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "cbc93ed63ad5b28b",
+        "type": "inject",
+        "z": "6cd485d1285d546b",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 550,
+        "y": 860,
+        "wires": [
+            [
+                "6c5888c20170c94b"
+            ]
+        ]
+    },
+    {
+        "id": "6c5888c20170c94b",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 41",
+        "func": "let messageMap = flow.get('messageMap') || {};\n\nmsg.payload = {message: messageMap};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 860,
+        "wires": [
+            [
+                "55af996aecd75236"
+            ]
+        ]
+    },
+    {
+        "id": "55af996aecd75236",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 82",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.message",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "19edd7a9d3cd4e71",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "function 42",
+        "func": "\nflow.set('messageMap', {})\nflow.set('messageMap2', {})\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2f1acc16df21d9a5",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "d": true,
+        "name": "handle Response",
+        "func": "\nlet command = msg.ocpp.command; // Get command from response\n    \n// Retrieve the original MessageId for this command\nlet messageMap2 = flow.get('messageMap2') || {};\nlet originalMessageId = messageMap2[command];\n    \nif (originalMessageId) {\n\n    msg.ocpp.MessageId = originalMessageId; // Set original MessageId\n    //msg.msgId = originalMessageId; // Set original MessageId\n    delete messageMap2[command]; // Optionally remove it after use\n    flow.set('messageMap2', messageMap2); // Update map in flow context\n}else {\n    // If no original MessageId is found for the command, log a message (optional)\n    node.warn(`Original MessageId not found for command: ${command}`);\n}\n\n// msg.payload = msg.payload;\n\nmsg.payload = {\n    command: command,\n    data: msg.payload.data\n}\n\nmsg.ocpp.chargeBoxIdentity = \"garage0\";\n\n//if(msg.ocpp.command === 'ChangeAvailability'){\n//        msg.payload.data.type = \"Operative\";\n//    }\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1df8a9c61a5642b1",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 84",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "ocpp.command",
+        "statusType": "jsonata",
+        "x": 600,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "1e08fb8855e6c6ed",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "handle Request",
+        "func": "\n// Create or get the map of commands and message IDs\nlet messageMap = flow.get('messageMap') || {};\n\nlet command = msg.ocpp.command;\nlet ocpp = msg.ocpp;\nlet msgId = msg.msgId;\nlet _msgid = msg._msgid;\n\n// Store the MessageId under the command\nmessageMap[command] = {ocpp, msgId, _msgid}; \n\n// Update the flow context with the new messageMap\nflow.set('messageMap', messageMap);\n\nif(command === 'BootNotification'){\n    msg.payload.data.chargePointVendor = \"Huawei\";\n    }\n\n// Set chargeBoxIdentity (optional)\nmsg.ocpp.chargeBoxIdentity = \"garage0\";\n//msg.payload = msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 380,
+        "wires": [
+            [
+                "23c567d637a55829",
+                "a857868333d61509"
+            ]
+        ]
+    },
+    {
+        "id": "23c567d637a55829",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 85",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "ac31ca8ea48f9a76",
+        "type": "switch",
+        "z": "6cd485d1285d546b",
+        "name": "Command Switch",
+        "property": "ocpp.command",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ChangeConfiguration",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "GetConfiguration",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "RemoteStartTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "RemoteStopTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Reset",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "SetCharginProfile",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "TriggerMessage",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "UpdateFirmware",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ChangeAvailability",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "GetCompositeSchedule",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "repair": false,
+        "outputs": 11,
+        "x": 870,
+        "y": 720,
+        "wires": [
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "aed7ac7b67e475e7",
+                "cf47b3563bdb1cfe"
+            ],
+            [
+                "c122e884928436f0",
+                "568e428d1dbb24c9"
+            ]
+        ]
+    },
+    {
+        "id": "a502e1f6d47dd8be",
+        "type": "debug",
+        "z": "6cd485d1285d546b",
+        "name": "debug 87",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 160,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "81093fa70e56c99d",
+        "type": "function",
+        "z": "6cd485d1285d546b",
+        "name": "handle Response",
+        "func": "function reorderObject(obj) {\n    // Check if \"status\" exists in the object, if so place it first\n    let reorderedObj = {};\n\n    if (obj.hasOwnProperty(\"status\")) {\n        reorderedObj[\"status\"] = obj[\"status\"];\n    }\n\n    // Add all other properties in their original order, except \"status\"\n    for (let key in obj) {\n        if (key !== \"status\") {\n            reorderedObj[key] = obj[key];\n        }\n    }\n\n    return reorderedObj;\n}\n\nmsg.ocpp.chargeBoxIdentity = \"garage0\";\nmsg.payload.command = msg.ocpp.command;\n\nmsg.payload.data.status = \"Accepted\"; // Status of the request\n\nif(msg.ocpp.command === 'ChangeAvailability'){\n        msg.payload.data.type = \"Operative\";\n    }\n\nmsg.payload.data = reorderObject(msg.payload.data);\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 640,
+        "wires": [
+            [
+                "1df8a9c61a5642b1",
+                "a857868333d61509"
+            ]
+        ]
+    },
+    {
+        "id": "cf47b3563bdb1cfe",
+        "type": "link out",
+        "z": "6cd485d1285d546b",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "25137e0e25dd0b0f"
+        ],
+        "x": 1175,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "25137e0e25dd0b0f",
+        "type": "link in",
+        "z": "6cd485d1285d546b",
+        "name": "link in 12",
+        "links": [
+            "cf47b3563bdb1cfe"
+        ],
+        "x": 25,
+        "y": 620,
+        "wires": [
+            [
+                "a502e1f6d47dd8be",
+                "5e6fde5b1f759c9a"
+            ]
+        ]
+    },
+    {
+        "id": "d5c732aab50fec48",
+        "type": "ocpp-remotej-cp",
+        "name": "",
+        "cbId": "garage1",
+        "ocppver": "1.6j"
+    },
+    {
+        "id": "a920bc54828cdce0",
+        "type": "ocpp-remote-cs",
+        "name": "evcc",
+        "url": "ws://192.168.178.40:8887"
+    }
+]
