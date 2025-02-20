@@ -1,0 +1,1373 @@
+[
+    {
+        "id": "826eec2f5c54219b",
+        "type": "CS server",
+        "z": "78a6919a908b1120",
+        "name": "",
+        "port": "8181",
+        "enabled15": false,
+        "path15": "",
+        "enabled16": false,
+        "path16": "",
+        "enabled16j": true,
+        "path16j": "",
+        "log": false,
+        "pathlog": "",
+        "x": 380,
+        "y": 1480,
+        "wires": [
+            [
+                "acb1f1c82b2fe919"
+            ]
+        ]
+    },
+    {
+        "id": "edc6bd247db0e131",
+        "type": "switch",
+        "z": "78a6919a908b1120",
+        "name": "",
+        "property": "payload.command",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Authorize",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StartTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StopTransaction",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "StatusNotification",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "BootNotification",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "MeterValues",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Heartbeat",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 8,
+        "x": 910,
+        "y": 1440,
+        "wires": [
+            [
+                "07a5ccaa2339fb9e",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "d253b93d80db3eb3",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "02353b2152b0ee17",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "348b919b364dcc19",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "b0cb4791c9eb92d4",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "f6f12a5ccb43a850",
+                "8d7d63ead61f5d57"
+            ],
+            [
+                "e7722529bbd40c9b",
+                "81c567435ca1ce7e"
+            ],
+            [
+                "3a896874b7c58e63"
+            ]
+        ]
+    },
+    {
+        "id": "acb1f1c82b2fe919",
+        "type": "switch",
+        "z": "78a6919a908b1120",
+        "name": "Identify msgType",
+        "property": "ocpp.msgType",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "99",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 670,
+        "y": 1480,
+        "wires": [
+            [
+                "edc6bd247db0e131"
+            ],
+            [
+                "97e870e12265aa4f"
+            ],
+            [
+                "97e870e12265aa4f"
+            ],
+            [
+                "97e870e12265aa4f"
+            ]
+        ]
+    },
+    {
+        "id": "653e95a1daf66e7c",
+        "type": "server response",
+        "z": "78a6919a908b1120",
+        "name": "",
+        "x": 1660,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "07a5ccaa2339fb9e",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process Authorize",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \"data\": {\n        \"idTagInfo\": {\n            \"status\": \"Accepted\",\n            \"expiryDate\": \"2024-12-31T23:59:59Z\"\n        }\n    }\n};\n\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 1300,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "d253b93d80db3eb3",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "process StartTransaction",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \n    \"data\": {\n        \"idTagInfo\": {\n            \"status\": \"Accepted\",\n            \"expiryDate\": \"2024-12-31T23:59:59Z\"\n        },\n        \"transactionId\": 1234\n\n    }\n};\n\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1340,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "02353b2152b0ee17",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process StopTransaction",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \n    \"data\": {\n        \"idTagInfo\": {\n            \"status\": \"Accepted\",\n        },\n    }\n};\n\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1380,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "348b919b364dcc19",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process StopNotification",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \"data\": {\n        },\n    \n};\n\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1420,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "b0cb4791c9eb92d4",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process BootNotification",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \"data\": {\n        \"status\": \"Accepted\",\n        \"interval\": 60\n        },\n    \n};\n\n\nlet now = new Date();\n\n//now.setTime(now.getTime() + 3600 * 1000);\n\n//let isoString = now.toISOString();\n\nmsg.payload.data.currentTime = now.toISOString();\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1460,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "e7722529bbd40c9b",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process HeartBeat",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \"data\": {\n        },\n    \n};\n\n\nlet now = new Date();\n\n//now.setTime(now.getTime() + 3600 * 1000);\n\n//let isoString = now.toISOString();\n\nmsg.payload.data.currentTime = now.toISOString();\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 1540,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "f6f12a5ccb43a850",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "Process MeterValues",
+        "func": "\nmsg.payload = {\n    \"msgType\": 3,\n    \"data\": {\n        },\n    \n};\n\nmsg.payload.command = msg.ocpp.command;\nmsg.ocpp.msgType = 3;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1160,
+        "y": 1500,
+        "wires": [
+            [
+                "f6227c261b0b8759"
+            ]
+        ]
+    },
+    {
+        "id": "172b96334ac0f437",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ChangeAvailabilityRequest",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"changeAvailability\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1,\"type\":\"Operative\"}}",
+        "payloadType": "json",
+        "x": 650,
+        "y": 1920,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "545bd7fd31c44736",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Reset",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"Reset\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"resetType\":\"Hard\"}}",
+        "payloadType": "json",
+        "x": 710,
+        "y": 1680,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "e692e409b2bbd425",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "set chargingProfile",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"SetChargingProfile\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":2,\"stackLevel\":2,\"chargingProfilePurpose\":\"ChargePointMaxProfile\",\"chargingProfileKind\":\"Absolute\",\"chargingSchedule\":{\"startSchedule\":\"2024-11-11T14:59:35Z\",\"chargingRateUnit\":\"W\",\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":11000}]}}}}",
+        "payloadType": "json",
+        "x": 910,
+        "y": 1720,
+        "wires": [
+            [
+                "8bbe172fce77dd7a"
+            ]
+        ]
+    },
+    {
+        "id": "b8275f38f613f00e",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "getCompositeSchedule",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"GetCompositeSchedule\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1,\"duration\":3600}}",
+        "payloadType": "json",
+        "x": 1000,
+        "y": 1680,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "dd770f8063213afb",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "RemoteStartTransaction",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"RemoteStartTransaction\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"idTag\":\"0010940454\",\"connectorId\":1,\"chargingProfile\":{\"chargingProfileId\":1,\"stackLevel\":1,\"transactionId\":1234,\"chargingProfilePurpose\":\"TxProfile\",\"chargingProfileKind\":\"Relative\",\"recurrencyKind\":null,\"validFrom\":null,\"validTo\":null,\"chargingSchedule\":{\"duration\":null,\"startSchedule\":null,\"chargingRateUnit\":\"W\",\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":4300}]}}}}",
+        "payloadType": "json",
+        "x": 650,
+        "y": 1720,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "aa223d28714d45da",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Triggermessage bootNotification",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"BootNotification\"}}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 1940,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "5fa5736350a0da94",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Triggermessage StatusNotification",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"StatusNotification\"}}",
+        "payloadType": "json",
+        "x": 260,
+        "y": 1980,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "3c77cd4314d455ef",
+        "type": "CS request JSON",
+        "z": "78a6919a908b1120",
+        "name": "",
+        "remotecb": "d5c732aab50fec48",
+        "command": "",
+        "cmddata": "",
+        "log": true,
+        "pathlog": "",
+        "x": 1380,
+        "y": 1840,
+        "wires": [
+            [
+                "a0de70d3c5ad638a"
+            ]
+        ]
+    },
+    {
+        "id": "8bbe172fce77dd7a",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "function 54",
+        "func": "\nlet now = new Date();\n\nnow.setTime(now.getTime() + 5400 * 1000);\n\nlet isoString = now.toISOString();\n\nmsg.payload.data.csChargingProfiles.chargingSchedule.startSchedule = isoString;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 1720,
+        "wires": [
+            [
+                "3c77cd4314d455ef",
+                "3b0228c459203243"
+            ]
+        ]
+    },
+    {
+        "id": "a7c0b4385bb19ab9",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Unlock Connector",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"UnlockConnector\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1}}",
+        "payloadType": "json",
+        "x": 670,
+        "y": 1880,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "af4b88008ec399cf",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "GetLocalListVersion",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"GetLocalListVersion\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{}}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 1700,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "c0973ee280490fa6",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "SendLocalListVersion",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"SendLocalListVersion\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"listVersion\":0,\"updateType\":\"Full\"}}",
+        "payloadType": "json",
+        "x": 220,
+        "y": 1740,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "a0de70d3c5ad638a",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "msg.payload.data.status",
+        "statusType": "jsonata",
+        "x": 1580,
+        "y": 1840,
+        "wires": []
+    },
+    {
+        "id": "67618e677c8d81b5",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "RemoteStopTransaction",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"RemoteStartTransaction\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"transactionId\":1234}}",
+        "payloadType": "json",
+        "x": 650,
+        "y": 1760,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "eccef71a14d0dd24",
+        "type": "comment",
+        "z": "78a6919a908b1120",
+        "name": "LOCAL AUTH LIST MANAGEMENT",
+        "info": "",
+        "x": 220,
+        "y": 1660,
+        "wires": []
+    },
+    {
+        "id": "3591df76a258f905",
+        "type": "comment",
+        "z": "78a6919a908b1120",
+        "name": "SMART CHARGING",
+        "info": "",
+        "x": 1010,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "4f15383e5d3e1dab",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "clearChargingProfile",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"ClearChargingProfile\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{}}",
+        "payloadType": "json",
+        "x": 990,
+        "y": 1760,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "8ed63584ac11c768",
+        "type": "comment",
+        "z": "78a6919a908b1120",
+        "name": "REMOTE TRIGGER",
+        "info": "",
+        "x": 250,
+        "y": 1900,
+        "wires": []
+    },
+    {
+        "id": "2172404c84ac5f5c",
+        "type": "comment",
+        "z": "78a6919a908b1120",
+        "name": "CORE",
+        "info": "",
+        "x": 690,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "b5c0c4e2303a665a",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ClearCache",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"ClearCache\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{}}",
+        "payloadType": "json",
+        "x": 690,
+        "y": 1960,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "3a896874b7c58e63",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "debug 104",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "97e870e12265aa4f",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "debug 105",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "8d7d63ead61f5d57",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "debug 106",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "f6227c261b0b8759",
+        "type": "function",
+        "z": "78a6919a908b1120",
+        "name": "function 55",
+        "func": "\nObject.assign(msg.payload, msg.payload.data);\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1470,
+        "y": 1440,
+        "wires": [
+            [
+                "653e95a1daf66e7c"
+            ]
+        ]
+    },
+    {
+        "id": "7d2763790f25564d",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "example 5",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":1,\"stackLevel\":11,\"chargingProfilePurpose\":\"TxDefaultProfile\",\"chargingProfileKind\":\"Relative\",\"chargingSchedule\":{\"chargingRateUnit\":\"W\",\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":4300}]}}}}",
+        "payloadType": "json",
+        "x": 960,
+        "y": 1800,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "caec2e0c6fb2ccb9",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "RemoteStartTransaction",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"RemoteStartTransaction\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1,\"idTag\":\"0010940454\",\"transactionId\":1234}}",
+        "payloadType": "json",
+        "x": 650,
+        "y": 1800,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "5759f5c516b35952",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "getTransactionStatus",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"GetTransactionStatus\",\"MessageId\":\"2121\",\"msgType\":2,\"data\":{\"connectorId\":1}}",
+        "payloadType": "json",
+        "x": 660,
+        "y": 1840,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "4f20a2c5858f954e",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "setChargingProfile --> 2000 W",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":1,\"stackLevel\":1,\"transactionId\":1234,\"chargingProfilePurpose\":\"TxDefaultProfile\",\"chargingProfileKind\":\"Relative\",\"recurrencyKind\":null,\"validFrom\":null,\"validTo\":null,\"chargingSchedule\":{\"startSchedule\":null,\"chargingRateUnit\":\"W\",\"minChargingRate\":null,\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":2000}]}}}}",
+        "payloadType": "json",
+        "x": 1020,
+        "y": 1840,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "81c567435ca1ce7e",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "Count Heartbeat",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "counter",
+        "x": 1430,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "26d239dfd6b7c40a",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "setChargingProfile --> 4300 W",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":1,\"stackLevel\":1,\"transactionId\":1234,\"chargingProfilePurpose\":\"TxDefaultProfile\",\"chargingProfileKind\":\"Relative\",\"recurrencyKind\":null,\"validFrom\":null,\"validTo\":null,\"chargingSchedule\":{\"startSchedule\":null,\"chargingRateUnit\":\"W\",\"minChargingRate\":null,\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":4300}]}}}}",
+        "payloadType": "json",
+        "x": 1020,
+        "y": 1880,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "3b0228c459203243",
+        "type": "debug",
+        "z": "78a6919a908b1120",
+        "name": "debug 107",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 1740,
+        "wires": []
+    },
+    {
+        "id": "c5b7f393493122e5",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "setChargingProfile --> 8000 W",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"SetChargingProfile\",\"data\":{\"connectorId\":1,\"csChargingProfiles\":{\"chargingProfileId\":1,\"stackLevel\":1,\"transactionId\":1234,\"chargingProfilePurpose\":\"TxDefaultProfile\",\"chargingProfileKind\":\"Relative\",\"recurrencyKind\":null,\"validFrom\":null,\"validTo\":null,\"chargingSchedule\":{\"startSchedule\":null,\"chargingRateUnit\":\"W\",\"minChargingRate\":null,\"chargingSchedulePeriod\":[{\"startPeriod\":0,\"limit\":8000}]}}}}",
+        "payloadType": "json",
+        "x": 1020,
+        "y": 1920,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "7591e079ec8128e3",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "getConfig",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"GetConfiguration\",\"data\":{\"keys\":\"ChargingScheduleAllowedChargingRateUnit\"}}",
+        "payloadType": "json",
+        "x": 900,
+        "y": 2400,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "8e91264a38838339",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "GetConfigurationMaxKeys",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"GetConfigurationMaxKeys\",\"value\":50}}",
+        "payloadType": "json",
+        "x": 950,
+        "y": 2360,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "e70ea9e14d84d1c6",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ConnectorSwitch3to1PhaseSupported",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"ConnectorSwitch3to1PhaseSupported\",\"value\":\"true\"}}",
+        "payloadType": "json",
+        "x": 990,
+        "y": 2320,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "5b2d32d1c5d9c6e8",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ChargingScheduleAllowedChargingRateUnit",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"ChargingScheduleAllowedChargingRateUnit\",\"value\":\"current\"}}",
+        "payloadType": "json",
+        "x": 1010,
+        "y": 2280,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "aafc11dbce0e1975",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "phases",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"ConnectorPhaseRotation\",\"value\":\"1.R\"}}",
+        "payloadType": "json",
+        "x": 1010,
+        "y": 2240,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "8fdf7cdb89d74229",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "authcache",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"AuthorizationCacheEnabled\",\"value\":\"false\"}}",
+        "payloadType": "json",
+        "x": 1020,
+        "y": 2200,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "8d57c096d3740edc",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "authrequest",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"AuthorizeRemoteTxRequests\",\"value\":\"false\"}}",
+        "payloadType": "json",
+        "x": 1010,
+        "y": 2160,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "cb7094cf4487b79b",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "metervalueinterval",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ChangeConfiguration\",\"data\":{\"key\":\"MeterValueSampleInterval\",\"value\":\"30\"}}",
+        "payloadType": "json",
+        "x": 990,
+        "y": 2120,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "1ed04687042579e7",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "get configuartion",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"GetConfiguration\",\"data\":{}}",
+        "payloadType": "json",
+        "x": 1000,
+        "y": 2080,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "956bfa2beac6637e",
+        "type": "comment",
+        "z": "78a6919a908b1120",
+        "name": "CONFIG",
+        "info": "",
+        "x": 1000,
+        "y": 2040,
+        "wires": []
+    },
+    {
+        "id": "a182e4ec2d7cf1a9",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Triggermessage MeterValues",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"MeterValues\"}}",
+        "payloadType": "json",
+        "x": 240,
+        "y": 2020,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "be2059794d3964b0",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "Triggermessage Heartbeat\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"TriggerMessage\",\"data\":{\"requestedMessage\":\"Heartbeat\"}}",
+        "payloadType": "json",
+        "x": 240,
+        "y": 2060,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "1a8726f7a7f47280",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ExtendedTriggermessage bootNotification",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ExtendedTriggerMessage\",\"data\":{\"requestedMessage\":\"BootNotification\"}}",
+        "payloadType": "json",
+        "x": 280,
+        "y": 2100,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "aa3524e0e5b1fa8a",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ExtendedTriggermessage StatusNotification",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ExtendedTriggerMessage\",\"data\":{\"requestedMessage\":\"StatusNotification\"}}",
+        "payloadType": "json",
+        "x": 290,
+        "y": 2140,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "fa1c96a4cc91ebb0",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ExtendedTriggermessage MeterValues",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ExtendedTriggerMessage\",\"data\":{\"requestedMessage\":\"MeterValues\"}}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 2180,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "01f29e370e8ace5d",
+        "type": "inject",
+        "z": "78a6919a908b1120",
+        "name": "ExtendedTriggermessage Heartbeat\"",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"MessageId\":\"2121\",\"msgType\":2,\"command\":\"ExtendedTriggerMessage\",\"data\":{\"requestedMessage\":\"Heartbeat\"}}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 2220,
+        "wires": [
+            [
+                "3c77cd4314d455ef"
+            ]
+        ]
+    },
+    {
+        "id": "d5c732aab50fec48",
+        "type": "ocpp-remotej-cp",
+        "name": "",
+        "cbId": "garage1",
+        "ocppver": "1.6j"
+    }
+]
